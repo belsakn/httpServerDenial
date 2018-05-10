@@ -2,11 +2,26 @@ package main
 
 import (
 	"fmt"
+	"interview-mali8/server"
+	"os"
 )
 
 func main() {
 
-	printUsage()
+	if len(os.Args) > 1 {
+		switch os := os.Args[1]; os {
+		case "server":
+			server.Server()
+		case "client":
+			fmt.Println("client.")
+		case "help":
+			printUsage()
+		default:
+			printUsage()
+		}
+	} else {
+		printUsage()
+	}
 
 }
 
