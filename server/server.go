@@ -13,5 +13,16 @@ func Server() {
 }
 
 func handlerequest(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	clientId := r.Form.Get("clientId")
+
+	if clientId == "" || clientId == " " {
+		log.Printf("Parameter clientId was not provided.")
+		w.WriteHeader(http.StatusForbidden)
+		return
+	}
+
+	log.Printf("Phone number to be parsed %s", clientId)
+
 	w.WriteHeader(http.StatusOK)
 }
