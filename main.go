@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"interview-mali8/client"
 	"interview-mali8/server"
 	"os"
 )
@@ -13,7 +14,7 @@ func main() {
 		case "server":
 			server.Server()
 		case "client":
-			fmt.Println("client.")
+			client.Client()
 		case "help":
 			printUsage()
 		default:
