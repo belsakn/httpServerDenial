@@ -10,7 +10,7 @@ import (
 func main() {
 
 	if len(os.Args) > 1 {
-		switch os := os.Args[1]; os {
+		switch ok := os.Args[1]; ok {
 		case "server":
 			server.Server()
 		case "client":
@@ -29,8 +29,8 @@ func main() {
 func printUsage() {
 	fmt.Printf("\n Usage: \n\n \t interview-mali8 command [arguments]")
 	fmt.Printf("\n\n The commands are: \n")
-	fmt.Printf("\n \t server \t run HTTP Denial-of-Service protection system on port 8080")
-	fmt.Printf("\n \t client \t run HTTP client")
-	fmt.Printf("\n \t help \t\t print usage instructions")
+	fmt.Printf("\n \t server \t\t run HTTP Denial-of-Service protection system on port 8080")
+	fmt.Printf("\n \t client [clientNum] \t run clientNum HTTP clients")
+	fmt.Printf("\n \t help \t\t\t print usage instructions")
 	fmt.Printf("\n")
 }
