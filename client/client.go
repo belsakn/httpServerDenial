@@ -2,15 +2,17 @@ package client
 
 import (
 	"log"
+	"math/rand"
 	"net/http"
+	"time"
 )
 
 func Client() {
 
-	urls := []string{"http://localhost:8080/", "http://localhost:8080/?clientId=2", "http://localhost:8080/fdgd"}
-
-	for _, url := range urls {
-		makeGetRequest(url)
+	for {
+		makeGetRequest("http://localhost:8080/?clientId=2")
+		r := rand.Intn(1222)
+		time.Sleep(time.Duration(r) * time.Millisecond)
 	}
 
 }
