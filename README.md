@@ -1,4 +1,4 @@
-# interview-mali8
+# Instructions
 
 In this task, you need to write a simple HTTP Denial-of-Service protection system.
 The solution should reside in different modules (one for the server, one for the client).
@@ -34,8 +34,8 @@ General notes:
 
 Navigate to %GOPATH/src
 ```
-git clone https://github.com/Zemanta/interview-mali8
-cd interview-mali8
+git clone https://github.com/mali8/httpServerDenial.git
+cd httpServerDenial
 go install
 ```
 
@@ -43,17 +43,17 @@ go install
 
 Run server
 ```
-interview-mali8 server
+httpServerDenial server
 ```
 
 Run client
 ```
-interview-mali8 client 5
+httpServerDenial client 5
 ```
 
 ## Tests
 
-Navigate to %GOPATH/src/interview-mali8
+Navigate to %GOPATH/src/httpServerDenial
 ```
 go test -v ./server/
 ```
