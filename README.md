@@ -25,3 +25,39 @@ General notes:
 * The solution should be clean piece of code – please write it as it was a production code (use your own standards/conventions).
 * Pay attention to thread safeness.
 * The solution should be as simple as possible (avoid over design/engineering).
+
+## Requirements
+
+- [Go](https://golang.org/)
+
+## Install 
+
+Navigate to %GOPATH/src
+```
+git clone https://github.com/Zemanta/interview-mali8
+cd interview-mali8
+go install
+```
+
+## Usage
+
+Run server
+```
+interview-mali8 server
+```
+
+Run client
+```
+interview-mali8 client 5
+```
+
+## Tests
+
+Navigate to %GOPATH/src/interview-mali8
+```
+go test -v ./server/
+```
+
+Author: Nejc Belšak
+
+E-mail: belsak@gmail.com
