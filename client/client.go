@@ -34,6 +34,7 @@ func startClient(url string, id int) {
 	for {
 		resp, err := http.Get(url)
 		if err != nil {
+			log.Printf("# HTTP Server on port 8080 not running. You should start ;)")
 			panic(err)
 		}
 
