@@ -35,13 +35,11 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(responseCodeForClient(clientId))
+	w.WriteHeader(responseCodeForClient(clientId, time.Now()))
 }
 
-func responseCodeForClient(clientId string) int {
+func responseCodeForClient(clientId string, currentTime time.Time) int {
 	logString := fmt.Sprintf("ClientId: %s > ", clientId)
-
-	currentTime := time.Now()
 
 	//Check if client exists else add client
 	if _, ok := clientMap[clientId]; ok {
