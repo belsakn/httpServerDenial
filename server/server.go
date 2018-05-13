@@ -25,7 +25,7 @@ func Server() {
 }
 
 func handleRequest(w http.ResponseWriter, r *http.Request) {
-	logString := ""
+
 	r.ParseForm()
 	clientId := r.Form.Get("clientId")
 
@@ -35,7 +35,11 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	logString = fmt.Sprintf("ClientId: %s > ", clientId)
+	w.WriteHeader(responseCodeForClient(clientId))
+}
+
+func responseCodeForClient(clientId string) int {
+	logString := fmt.Sprintf("ClientId: %s > ", clientId)
 
 	currentTime := time.Now()
 
@@ -53,22 +57,20 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 			clientMap[clientId].startTime = currentTime
 			clientMap[clientId].requestCount = 1
 			log.Printf(logString + "Time frime has passed, reset requestCount. RETURN 200\n")
-			w.WriteHeader(http.StatusOK)
-			return
+			return http.StatusOK
+
 		}
 
 		//Client made less the 5 request than OK
 		if clientMap[clientId].requestCount <= 5 {
 			log.Printf(logString + "RETURN 200\n")
-			w.WriteHeader(http.StatusOK)
-			return
+			return http.StatusOK
 		}
 
 		//Client has reached the threshold of 5 req in 5s so 503 is returned
 		if clientMap[clientId].requestCount >= 5 && elapsedTimeInt64 <= 5000 {
 			log.Printf(logString + "Too much request for clients time frame. RETURN 503\n")
-			w.WriteHeader(http.StatusServiceUnavailable)
-			return
+			return http.StatusServiceUnavailable
 		}
 
 	}
@@ -76,5 +78,5 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 	//Clients first request
 	clientMap[clientId] = &Client{startTime: currentTime, requestCount: 1}
 	log.Printf(logString + "First request for client. RETURN 200\n")
-	w.WriteHeader(http.StatusOK)
+	return http.StatusOK
 }
