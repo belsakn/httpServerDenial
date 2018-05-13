@@ -19,7 +19,7 @@ func Client(numberOfClinets int) {
 
 	setupCloseHandler()
 
-	for i := 0; i <= numberOfClinets; i++ {
+	for i := 1; i <= numberOfClinets; i++ {
 		wg.Add(1)
 		go startClient(fmt.Sprintf("http://localhost:8080/?clientId=%d", i), i)
 	}
