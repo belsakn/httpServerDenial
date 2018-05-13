@@ -19,15 +19,17 @@ func Client(numberOfClinets int) {
 
 	setupCloseHandler()
 
+	//Start clients concurrently
 	for i := 1; i <= numberOfClinets; i++ {
 		wg.Add(1)
 		go startClient(fmt.Sprintf("http://localhost:8080/?clientId=%d", i), i)
 	}
-
+	//Wait for all clients to finish last request
 	wg.Wait()
 	log.Printf("My work have is done...")
 }
 
+//Client is making get request every now and then
 func startClient(url string, id int) {
 	for {
 		resp, err := http.Get(url)
@@ -37,6 +39,7 @@ func startClient(url string, id int) {
 
 		log.Printf("Get %s response code is %d", url, resp.StatusCode)
 
+		//When stopWorking is set to true break for loop
 		if stopWorking {
 			break
 		}
@@ -48,6 +51,7 @@ func startClient(url string, id int) {
 	wg.Done()
 }
 
+//Handle CTRL+C pressed in terminal
 func setupCloseHandler() {
 	c := make(chan os.Signal, 2)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
