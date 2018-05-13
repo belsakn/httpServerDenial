@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -24,17 +25,17 @@ func Server() {
 }
 
 func handleRequest(w http.ResponseWriter, r *http.Request) {
-	log.Printf("------")
+	logString := ""
 	r.ParseForm()
 	clientId := r.Form.Get("clientId")
 
 	if clientId == "" || clientId == " " {
-		log.Printf("Parameter clientId was not provided.")
+		log.Printf("Parameter clientId was not provided. RETURN 403")
 		w.WriteHeader(http.StatusForbidden)
 		return
 	}
 
-	log.Println("clientId: ", clientId)
+	logString = fmt.Sprintf("ClientId: %s > ", clientId)
 
 	currentTime := time.Now()
 	if _, ok := clientMap[clientId]; ok {
@@ -43,22 +44,24 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 		elapsedTime := currentTime.Sub(clientMap[clientId].startTime)
 		elapsedTimeInt64 := int64(elapsedTime.Seconds() * 1000)
 
-		log.Println("elapsedTime from last request: ", elapsedTimeInt64, "ms")
+		logString = logString + fmt.Sprintf("elapsedTime from last request: %d ms. Client request counter: %d. ", elapsedTimeInt64, clientMap[clientId].requestCount)
 
 		if elapsedTimeInt64 >= 5000 {
 			clientMap[clientId].startTime = currentTime
 			clientMap[clientId].requestCount = 1
-			log.Println("Time frime has passed, reset requestCount.")
+			log.Printf(logString + "Time frime has passed, reset requestCount. RETURN 200\n")
 			w.WriteHeader(http.StatusOK)
 			return
 		}
 
 		if clientMap[clientId].requestCount <= 5 {
+			log.Printf(logString + "RETURN 200\n")
 			w.WriteHeader(http.StatusOK)
 			return
 		}
 
 		if clientMap[clientId].requestCount >= 5 && elapsedTimeInt64 <= 5000 {
+			log.Printf(logString + "Too much request for clients time frame. RETURN 503\n")
 			w.WriteHeader(http.StatusServiceUnavailable)
 			return
 		}
@@ -67,6 +70,6 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 
 	//clients first request
 	clientMap[clientId] = &Client{startTime: currentTime, requestCount: 1}
-	log.Println("First request for client.")
+	log.Printf(logString + "First request for client. RETURN 200\n")
 	w.WriteHeader(http.StatusOK)
 }
